@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
-import { products } from "@/data/products";
+import { allProducts } from "@/data/products";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -43,7 +43,7 @@ const Cart = () => {
   }
 
   const cartProducts = items.map(item => {
-    const product = products.find(p => p.id === item.product_id);
+    const product = allProducts.find(p => p.id === item.product_id);
     return { ...item, product };
   }).filter(item => item.product);
 
