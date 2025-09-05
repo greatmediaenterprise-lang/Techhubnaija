@@ -14,74 +14,91 @@ export type Database = {
   }
   public: {
     Tables: {
-      cart: {
+      accounts: {
         Row: {
+          account_number: string
+          account_type: string
+          balance: number
           created_at: string
+          currency: string
           id: string
-          product_id: string
-          quantity: number
+          is_active: boolean
           updated_at: string
           user_id: string
         }
         Insert: {
+          account_number: string
+          account_type: string
+          balance?: number
           created_at?: string
+          currency?: string
           id?: string
-          product_id: string
-          quantity?: number
+          is_active?: boolean
           updated_at?: string
           user_id: string
         }
         Update: {
+          account_number?: string
+          account_type?: string
+          balance?: number
           created_at?: string
+          currency?: string
           id?: string
-          product_id?: string
-          quantity?: number
+          is_active?: boolean
           updated_at?: string
           user_id?: string
         }
         Relationships: []
       }
-      orders: {
+      cards: {
         Row: {
+          account_id: string
+          card_category: string
+          card_number: string
+          card_type: string
           created_at: string
+          cvv: string
+          expiry_date: string
           id: string
-          order_items: Json
-          payment_method: string | null
-          shipping_address: Json | null
-          status: string
-          total_amount: number
-          updated_at: string
-          user_id: string
+          is_active: boolean
         }
         Insert: {
+          account_id: string
+          card_category: string
+          card_number: string
+          card_type: string
           created_at?: string
+          cvv: string
+          expiry_date: string
           id?: string
-          order_items: Json
-          payment_method?: string | null
-          shipping_address?: Json | null
-          status?: string
-          total_amount: number
-          updated_at?: string
-          user_id: string
+          is_active?: boolean
         }
         Update: {
+          account_id?: string
+          card_category?: string
+          card_number?: string
+          card_type?: string
           created_at?: string
+          cvv?: string
+          expiry_date?: string
           id?: string
-          order_items?: Json
-          payment_method?: string | null
-          shipping_address?: Json | null
-          status?: string
-          total_amount?: number
-          updated_at?: string
-          user_id?: string
+          is_active?: boolean
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cards_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
           address: string | null
           created_at: string
-          full_name: string | null
+          full_name: string
           id: string
           phone: string | null
           updated_at: string
@@ -90,7 +107,7 @@ export type Database = {
         Insert: {
           address?: string | null
           created_at?: string
-          full_name?: string | null
+          full_name: string
           id?: string
           phone?: string | null
           updated_at?: string
@@ -99,7 +116,7 @@ export type Database = {
         Update: {
           address?: string | null
           created_at?: string
-          full_name?: string | null
+          full_name?: string
           id?: string
           phone?: string | null
           updated_at?: string
@@ -110,77 +127,64 @@ export type Database = {
       transactions: {
         Row: {
           amount: number
-          created_at: string | null
-          description: string
+          created_at: string
+          description: string | null
+          from_account_id: string | null
           id: string
-          recipient: string | null
-          status: string | null
-          type: string
-          user_id: string
+          status: string
+          to_account_id: string | null
+          transaction_type: string
         }
         Insert: {
           amount: number
-          created_at?: string | null
-          description: string
+          created_at?: string
+          description?: string | null
+          from_account_id?: string | null
           id?: string
-          recipient?: string | null
-          status?: string | null
-          type: string
-          user_id: string
+          status?: string
+          to_account_id?: string | null
+          transaction_type: string
         }
         Update: {
           amount?: number
-          created_at?: string | null
-          description?: string
+          created_at?: string
+          description?: string | null
+          from_account_id?: string | null
           id?: string
-          recipient?: string | null
-          status?: string | null
-          type?: string
-          user_id?: string
+          status?: string
+          to_account_id?: string | null
+          transaction_type?: string
         }
         Relationships: [
           {
-            foreignKeyName: "transactions_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "transactions_from_account_id_fkey"
+            columns: ["from_account_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_to_account_id_fkey"
+            columns: ["to_account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
             referencedColumns: ["id"]
           },
         ]
-      }
-      users: {
-        Row: {
-          account_number: string
-          balance: number | null
-          created_at: string | null
-          email: string
-          full_name: string
-          id: string
-        }
-        Insert: {
-          account_number: string
-          balance?: number | null
-          created_at?: string | null
-          email: string
-          full_name: string
-          id: string
-        }
-        Update: {
-          account_number?: string
-          balance?: number | null
-          created_at?: string | null
-          email?: string
-          full_name?: string
-          id?: string
-        }
-        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_account_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      generate_card_number: {
+        Args: { card_type: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
