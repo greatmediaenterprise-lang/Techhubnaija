@@ -42,7 +42,7 @@ const ProductDetail = () => {
     if (navigator.share) {
       navigator.share({
         title: product.name,
-        text: product.description,
+        text: product.description || `Check out this amazing ${product.name} at great prices!`,
         url: window.location.href,
       });
     } else {
@@ -113,7 +113,7 @@ const ProductDetail = () => {
                 {product.category}
               </Badge>
               <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-              <p className="text-muted-foreground mb-4">{product.description}</p>
+              <p className="text-muted-foreground mb-4">{product.description || `Experience the latest technology with ${product.name}. High quality and reliable performance guaranteed.`}</p>
               
               {/* Rating */}
               <div className="flex items-center gap-2 mb-4">
@@ -205,7 +205,7 @@ const ProductDetail = () => {
               <Card>
                 <CardContent className="p-4">
                   <h3 className="font-semibold mb-2">Brand</h3>
-                  <p className="text-sm text-muted-foreground">{product.brand}</p>
+                  <p className="text-sm text-muted-foreground">{product.brand || "TechHub Naija"}</p>
                 </CardContent>
               </Card>
               
@@ -239,7 +239,13 @@ const ProductDetail = () => {
             <CardContent className="p-6">
               <h2 className="text-xl font-bold mb-4">Specifications</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {product.specifications.map((spec, index) => (
+              {(product.specifications || [
+                "High Quality Materials",
+                "Latest Technology",
+                "1 Year Warranty",
+                "Free Technical Support",
+                "Fast Performance"
+              ]).map((spec, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
                     <span className="text-sm">{spec}</span>

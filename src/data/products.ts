@@ -14,6 +14,9 @@ export interface Product {
   badge?: string;
   inStock: boolean;
   category: string;
+  description?: string;
+  brand?: string;
+  specifications?: string[];
 }
 
 export const products: Product[] = [
