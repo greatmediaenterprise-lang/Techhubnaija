@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Truck, Shield, Headphones, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import laptopImage from "@/assets/laptop-gaming.jpg";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-12 lg:py-20">
       <div className="container mx-auto px-4">
@@ -26,11 +28,20 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-base px-8">
+              <Button 
+                size="lg" 
+                className="text-base px-8"
+                onClick={() => navigate("/?category=all")}
+              >
                 Shop Now
                 <Zap className="ml-2 w-4 h-4" />
               </Button>
-              <Button variant="outline" size="lg" className="text-base px-8">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-base px-8"
+                onClick={() => navigate("/?deals=true")}
+              >
                 View Deals
               </Button>
             </div>

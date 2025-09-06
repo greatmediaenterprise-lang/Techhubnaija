@@ -5,16 +5,47 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { products, categories } from "@/data/products";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchParams] = useSearchParams();
 
-  const filteredProducts = selectedCategory === "all" 
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    const searchParam = searchParams.get("search");
+    const dealsParam = searchParams.get("deals");
+    
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    } else if (searchParam || dealsParam) {
+      setSelectedCategory("all");
+    }
+  }, [searchParams]);
+
+  const searchQuery = searchParams.get("search");
+  const showDeals = searchParams.get("deals") === "true";
+
+  let filteredProducts = selectedCategory === "all" 
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
-  const featuredProducts = products.slice(0, 4);
+  // Apply search filter
+  if (searchQuery) {
+    filteredProducts = filteredProducts.filter(product => 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (product.brand && product.brand.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }
+
+  // Apply deals filter
+  if (showDeals) {
+    filteredProducts = filteredProducts.filter(product => product.originalPrice && product.originalPrice > product.price);
+  }
+
+  const featuredProducts = products.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,7 +110,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              {selectedCategory === "all" ? "All Products" : categories.find(c => c.id === selectedCategory)?.name}
+              {showDeals ? "Hot Deals" : 
+               searchQuery ? `Search Results for "${searchQuery}"` :
+               selectedCategory === "all" ? "All Products" : 
+               categories.find(c => c.id === selectedCategory)?.name}
             </h2>
             <p className="text-muted-foreground">
               {filteredProducts.length} products available

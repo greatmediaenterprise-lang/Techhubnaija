@@ -3,12 +3,26 @@ import { Input } from "@/components/ui/input";
 import { Search, ShoppingCart, User, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 const Header = () => {
   const { user, signOut } = useAuth();
   const { totalItems } = useCart();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleCategoryClick = (category: string) => {
+    navigate(`/?category=${category}`);
+  };
 
   return (
     <header className="bg-background border-b border-border sticky top-0 z-50">
@@ -24,13 +38,15 @@ const Header = () => {
 
           {/* Search Bar */}
           <div className="flex-1 max-w-2xl mx-8">
-            <div className="relative">
+            <form onSubmit={handleSearch} className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input 
                 placeholder="Search for laptops, phones, cameras..." 
                 className="pl-10 w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-            </div>
+            </form>
           </div>
 
           {/* Right Actions */}
@@ -77,22 +93,52 @@ const Header = () => {
 
         {/* Categories Navigation */}
         <nav className="hidden md:flex items-center gap-6 mt-4 pt-4 border-t border-border">
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => handleCategoryClick("laptops")}
+          >
             Laptops
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => handleCategoryClick("phones")}
+          >
             Phones
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => handleCategoryClick("computers")}
+          >
             Computers
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => handleCategoryClick("network")}
+          >
             Network Equipment
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => handleCategoryClick("cameras")}
+          >
             Cameras
           </Button>
-          <Button variant="ghost" size="sm" className="text-success hover:text-success/80">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-success hover:text-success/80"
+            onClick={() => navigate("/?deals=true")}
+          >
             Deals
           </Button>
         </nav>
