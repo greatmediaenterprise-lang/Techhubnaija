@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { allProducts } from "@/data/products";
+import { products } from "@/data/products";
 import { useCart } from "@/hooks/useCart";
 import { Star, ArrowLeft, ShoppingCart, Heart, Share2, Minus, Plus } from "lucide-react";
 import Header from "@/components/Header";
@@ -12,7 +12,7 @@ import { toast } from "@/hooks/use-toast";
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const product = allProducts.find(p => p.id === id);
+  const product = products.find(p => p.id === id);
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);

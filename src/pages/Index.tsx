@@ -4,7 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { allProducts, categories } from "@/data/products";
+import { products, categories } from "@/data/products";
 import { useState } from "react";
 
 const Index = () => {
