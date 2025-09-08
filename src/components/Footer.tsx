@@ -37,21 +37,31 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground">Shop</h3>
             <div className="space-y-2">
-              <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
-                Laptops & Computers
-              </Button>
-              <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
-                Smartphones & Tablets  
-              </Button>
-              <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
-                Cameras & Photography
-              </Button>
-              <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
-                Network Equipment
-              </Button>
-              <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
-                Accessories
-              </Button>
+              <Link to="/?category=laptops">
+                <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
+                  Laptops & Computers
+                </Button>
+              </Link>
+              <Link to="/?category=phones">
+                <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
+                  Smartphones & Tablets  
+                </Button>
+              </Link>
+              <Link to="/?category=cameras">
+                <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
+                  Cameras & Photography
+                </Button>
+              </Link>
+              <Link to="/?category=network">
+                <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
+                  Network Equipment
+                </Button>
+              </Link>
+              <Link to="/?category=accessories">
+                <Button variant="ghost" size="sm" className="h-auto p-0 justify-start text-muted-foreground">
+                  Accessories
+                </Button>
+              </Link>
             </div>
           </div>
 
