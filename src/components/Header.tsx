@@ -30,9 +30,11 @@ const Header = () => {
         <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
-            </div>
+            <img 
+              src="/lovable-uploads/d7f9ae98-f4a1-4d06-a817-8cbc162336ec.png" 
+              alt="TechHub Naija Logo" 
+              className="w-8 h-8"
+            />
             <span className="text-xl font-bold text-foreground">TechHub Naija</span>
           </Link>
 
