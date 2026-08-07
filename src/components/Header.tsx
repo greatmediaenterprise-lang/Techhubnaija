@@ -16,12 +16,12 @@ const Header = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}#products`);
     }
   };
 
   const handleCategoryClick = (category: string) => {
-    navigate(`/?category=${category}`);
+    navigate(`/?category=${category}#products`);
   };
 
   return (
@@ -139,7 +139,7 @@ const Header = () => {
             variant="ghost" 
             size="sm" 
             className="text-success hover:text-success/80"
-            onClick={() => navigate("/?deals=true")}
+            onClick={() => navigate("/?deals=true#products")}
           >
             Deals
           </Button>

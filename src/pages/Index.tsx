@@ -22,7 +22,20 @@ const Index = () => {
     } else if (searchParam || dealsParam) {
       setSelectedCategory("all");
     }
+
+    if (window.location.hash === "#products") {
+      window.requestAnimationFrame(() => {
+        document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
   }, [searchParams]);
+
+  const selectCategory = (category: string) => {
+    setSelectedCategory(category);
+    window.requestAnimationFrame(() => {
+      document.getElementById("products")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   const searchQuery = searchParams.get("search");
   const showDeals = searchParams.get("deals") === "true";
@@ -65,7 +78,7 @@ const Index = () => {
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <Button 
               variant={selectedCategory === "all" ? "default" : "outline"}
-              onClick={() => setSelectedCategory("all")}
+              onClick={() => selectCategory("all")}
               className="rounded-full"
             >
               All Products
@@ -74,7 +87,7 @@ const Index = () => {
               <Button
                 key={category.id}
                 variant={selectedCategory === category.id ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() => selectCategory(category.id)}
                 className="rounded-full"
               >
                 {category.name} ({category.count})
@@ -106,7 +119,7 @@ const Index = () => {
       </section>
 
       {/* All Products */}
-      <section className="py-12 bg-muted/10">
+      <section id="products" className="scroll-mt-36 py-12 bg-muted/10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-4">
