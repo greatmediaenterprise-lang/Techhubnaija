@@ -50,6 +50,53 @@ export type Database = {
         }
         Relationships: []
       }
+      cards: {
+        Row: {
+          account_id: string
+          card_number: string
+          card_type: string
+          cardholder_name: string
+          created_at: string
+          cvv: string
+          expiry_date: string
+          id: string
+          is_active: boolean
+          updated_at: string
+        }
+        Insert: {
+          account_id: string
+          card_number: string
+          card_type?: string
+          cardholder_name: string
+          created_at?: string
+          cvv: string
+          expiry_date: string
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Update: {
+          account_id?: string
+          card_number?: string
+          card_type?: string
+          cardholder_name?: string
+          created_at?: string
+          cvv?: string
+          expiry_date?: string
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart: {
         Row: {
           created_at: string
@@ -166,10 +213,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      generate_account_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      generate_account_number: { Args: never; Returns: string }
+      generate_card_number: { Args: { card_type: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
