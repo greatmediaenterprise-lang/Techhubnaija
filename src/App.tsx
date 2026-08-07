@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import ProductDetail from "./pages/ProductDetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import ResetPassword from "./pages/ResetPassword";
 import Cookies from "./pages/Cookies";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/cookies" element={<Cookies />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
