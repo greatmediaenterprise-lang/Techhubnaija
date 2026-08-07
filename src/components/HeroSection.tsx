@@ -31,7 +31,7 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="text-base px-8"
-                onClick={() => navigate("/?category=all")}
+                onClick={() => navigate("/?category=all#products")}
               >
                 Shop Now
                 <Zap className="ml-2 w-4 h-4" />
@@ -40,7 +40,7 @@ const HeroSection = () => {
                 variant="outline" 
                 size="lg" 
                 className="text-base px-8"
-                onClick={() => navigate("/?deals=true")}
+                onClick={() => navigate("/?deals=true#products")}
               >
                 View Deals
               </Button>
