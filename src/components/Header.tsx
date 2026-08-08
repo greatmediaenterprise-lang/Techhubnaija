@@ -1,27 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ShoppingCart, User, Menu } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
+const CATEGORY_LINKS = [
+  { id: "laptops", label: "Laptops" },
+  { id: "phones", label: "Phones" },
+  { id: "computers", label: "Computers" },
+  { id: "network", label: "Network Equipment" },
+  { id: "cameras", label: "Cameras" },
+];
+
 const Header = () => {
   const { user, signOut } = useAuth();
   const { totalItems } = useCart();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/?search=${encodeURIComponent(searchQuery.trim())}#products`);
+      setMenuOpen(false);
     }
   };
 
   const handleCategoryClick = (category: string) => {
     navigate(`/?category=${category}#products`);
+    setMenuOpen(false);
   };
 
   return (
@@ -87,54 +98,83 @@ const Header = () => {
                 </Link>
               </>
             )}
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Menu className="w-4 h-4" />
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </Button>
           </div>
         </div>
 
+        {/* Mobile / Tablet Menu */}
+        {menuOpen && (
+          <nav className="md:hidden mt-4 pt-4 border-t border-border flex flex-col gap-1">
+            {CATEGORY_LINKS.map((c) => (
+              <Button
+                key={c.id}
+                variant="ghost"
+                size="sm"
+                className="justify-start text-muted-foreground hover:text-foreground"
+                onClick={() => handleCategoryClick(c.id)}
+              >
+                {c.label}
+              </Button>
+            ))}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="justify-start text-success hover:text-success/80"
+              onClick={() => {
+                navigate("/?deals=true#products");
+                setMenuOpen(false);
+              }}
+            >
+              Deals
+            </Button>
+            <div className="border-t border-border mt-2 pt-2">
+              {user ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    signOut();
+                    setMenuOpen(false);
+                  }}
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Link to="/auth" onClick={() => setMenuOpen(false)}>
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    <User className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </nav>
+        )}
+
         {/* Categories Navigation */}
         <nav className="hidden md:flex items-center gap-6 mt-4 pt-4 border-t border-border">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => handleCategoryClick("laptops")}
-          >
-            Laptops
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => handleCategoryClick("phones")}
-          >
-            Phones
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => handleCategoryClick("computers")}
-          >
-            Computers
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => handleCategoryClick("network")}
-          >
-            Network Equipment
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground hover:text-foreground"
-            onClick={() => handleCategoryClick("cameras")}
-          >
-            Cameras
-          </Button>
+          {CATEGORY_LINKS.map((c) => (
+            <Button
+              key={c.id}
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
+              onClick={() => handleCategoryClick(c.id)}
+            >
+              {c.label}
+            </Button>
+          ))}
           <Button 
             variant="ghost" 
             size="sm" 
