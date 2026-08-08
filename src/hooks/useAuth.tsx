@@ -15,6 +15,14 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Always send auth emails back to the live site (not the Lovable preview),
+// except when developing locally.
+const SITE_URL = "https://techhubnaija.vercel.app";
+const getRedirectBase = () => {
+  const host = window.location.hostname;
+  return host === "localhost" || host === "127.0.0.1" ? window.location.origin : SITE_URL;
+};
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -41,7 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    const redirectUrl = `${getRedirectBase()}/`;
     
     const { error } = await supabase.auth.signUp({
       email,
@@ -92,7 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`
+      redirectTo: `${getRedirectBase()}/reset-password`
     });
 
     if (error) {
